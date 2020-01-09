@@ -1,0 +1,11 @@
+void draw(int[] data) {
+  // start from the bottom, and copy a fixed amount of data up
+  int index = randomFromEnd([[chunk size]]);
+  for(int i = index; i < [[chunk size]]; i++){
+    data[i] = data[i + [[chunk size]]];
+  }
+  drawData(data);
+
+  // wait for a while
+  delay([[delay]]);
+}
