@@ -9,3 +9,4 @@ local_addons/ofxFaceTracker2
 local_addons/ofxCv
 local_addons/ofxOpenCv
 local_addons/ofxDelaunay
+local_addons/ofxPoissonDiskSampling
