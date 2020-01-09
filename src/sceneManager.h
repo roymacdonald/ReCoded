@@ -62,8 +62,10 @@ public:
   //ofFbo dimmedSceneFbo;
     ofFbo codeFbo;
   //ofShader dimmerShader;
-    ofxPanel * panel;
     
+	ofxPanel sceneGui;
+	void loadSceneGui();
+	
     ofParameter<float> codeEnergyDecayRate, codeEnergyPerFrame;
     ofxPanel codeControls;
     
@@ -98,6 +100,7 @@ public:
     
     bool fadingIn;
     
+	void setupGui();
     ofxPanel gui;
     ofParameter<bool>bAutoPlay, bSceneWaitForCode, bFadeOut, bAutoAdvance, drawScenePanel, enableMidiUpdate, enableParameterSounds;
     ofParameter<float> autoadvanceDelay, ofSmoothing;

@@ -6,9 +6,13 @@
 //
 //
 
+
 #include "sceneManager.h"
 #include "baseScene.h"
 #include "exampleScene.h"
+
+/// MIT sketches
+
 #include "mitScene1.h"
 #include "aaronLillianSchwartz.h"
 #include "aaronMurielCooper.h"
@@ -55,6 +59,90 @@
 #include "karstenVeraMolnar.h"
 #include "karstenKenKnowlton.h"
 #include "karstenJohnWhitney.h"
+
+
+/// SFPC sketches
+
+
+#include "triangleScene.h"
+#include "veraAnimatedScene.h"
+#include "robbyMolnarScene.h"
+#include "robbyRileyScene.h"
+#include "yeseulWhitneyScene.h"
+#include "johnWhitneyShader01.h"
+#include "johnWhitneyShader02.h"
+#include "RoyWhitney1.h"
+#include "veraFscene.h"
+#include "anastasisRileyScene.h"
+#include "loloWhitney.h"
+#include "loloVera.h"
+#include "andyMenkmanJpg.h"
+#include "andyMenkmanPng.h"
+#include "andyMenkmanTif.h"
+#include "CooperBauhaus.h"
+#include "memoAktenScene.h"
+#include "submotionOrchestraScene.h"
+#include "chrisMurielCooper.h"
+#include "chrisRileyCascando.h"
+#include "veraMolnarTrapezium.h"
+#include "manfredMohrP196A.h"
+#include "loloVera2.h"
+#include "cantusFirmusRiley.h"
+#include "chrisVeraInterruptions.h"
+#include "aaronMarcusHieroglyphB.h"
+#include "veraMolnarLines68.h"
+#include "Cooper3dText.h"
+#include "alexLissamojiWhitney.h"
+#include "janVantommeScene.h"
+#include "rodrigoBelfort.h"
+#include "rachelScene.h"
+#include "RileyArcsRoy.h"
+#include "robbyMenkmanScene.h"
+#include "yosukeVeraSansTitre.h"
+// #include "alexGifPaletteDitherMenkman.h"
+#include "yeseulMenkmanInstitution.h"
+#include "yeseulCooperMessages.h"
+#include "yosukeJohnWhitneyMatrix.h"
+#include "mgsCooperSymbols.h"
+#include "mgsRileyDiamonds.h"
+#include "mgsRileyEllipsesAndSquares.h"
+#include "mgsRileyDescending.h"
+#include "mgsVeraMolnarLineStudy.h"
+#include "mgsMaedaTimePainter.h"
+#include "olegVeraV.h"
+#include "sarahgpRileyCircle.h"
+#include "mwalczykVeraSquares.h"
+#include "yeseulRileyBrokencircle.h"
+#include "zachTest.h"
+
+#include "mattKnowlton.h"
+
+#include "heatherMolnarScene.h"
+#include "yingTanWhitneyMatrix.h"
+#include "annMolnarRectangles.h"
+#include "weiWhitney.h"
+#include "yumiNishida01.h"
+
+#include "niklasLissajous.h"
+#include "niklasMolnar.h"
+#include "niklasMorisawa.h"
+#include "niklasWhitneySineWave.h"
+#include "fernandoMuriel.h"
+#include "fernandoWhitney.h"
+#include "fernandoWhitney2.h"
+#include "hyojinVeraMolnar.h"
+#include "hyojinJohnWhitney.h"
+#include "EstherKnowltonScene.h"
+#include "jacobsonMolnar_01.h"
+#include "jacobsonMolnar_02.h"
+#include "jacobsonWhitney_01.h"
+#include "aprilMenkman.h"
+#include "runchalMolnar.h"
+#include "weiMolnar_01.h"
+#include "annCaseyWave.h"
+#include "diegoScene_01.h"
+#include "stacyButterflies.h"
+#include "EstherMolnarScene.h"
 
 
 
@@ -152,6 +240,8 @@ void sceneManager::setup(){
     }
 #endif
     
+	/// MIT scenes
+	
     
     scenes.push_back(new pbeshaiVideo1());      // has recording
     scenes.push_back(new pbeshaiKnowlton1());   // has recording
@@ -190,6 +280,92 @@ void sceneManager::setup(){
 //    scenes.push_back(new mitScene1());
 //    scenes.push_back(new exampleScene());
 
+	/// SFPC scenes
+	
+	
+	
+	#ifdef SHOW_SFPC_FALL_2017
+	   // ------- 2017 fall
+		scenes.push_back(new EstherMolnarScene());
+		scenes.push_back(new stacyButterflies());
+		scenes.push_back(new diegoScene_01());
+		scenes.push_back(new annCaseyWave());
+		scenes.push_back(new weiMolnar_01());
+		scenes.push_back(new runchalMolnar());
+		scenes.push_back(new aprilMenkman());
+		scenes.push_back(new heatherMolnarScene());
+		scenes.push_back(new niklasLissajous());
+		scenes.push_back(new niklasMolnar());
+		scenes.push_back(new niklasMorisawa());
+		scenes.push_back(new niklasWhitneySineWave());
+		scenes.push_back(new fernandoMuriel());
+		scenes.push_back(new fernandoWhitney());
+		scenes.push_back(new fernandoWhitney2());
+		scenes.push_back(new jacobsonWhitney_01());
+		scenes.push_back(new jacobsonMolnar_02());
+		scenes.push_back(new jacobsonMolnar_01());
+		scenes.push_back(new hyojinVeraMolnar());
+		scenes.push_back(new hyojinJohnWhitney());
+		scenes.push_back(new mattKnowlton());
+		scenes.push_back(new EstherKnowltonScene());
+		scenes.push_back(new yingTanWhitneyMatrix());
+		scenes.push_back(new annMolnarRectangles());
+		scenes.push_back(new weiWhitney());
+		scenes.push_back(new yumiNishida01());
+		
+
+	#endif
+	#ifdef SHOW_SFPC_FALL_2015
+		scenes.push_back(new zachTest());
+		scenes.push_back(new CooperBauhaus());  // this might make for a good start scene -Robby & Becca
+		scenes.push_back(new RileyArcsRoy());
+		scenes.push_back(new rachelScene());
+		scenes.push_back(new rodrigoBelfort());
+		scenes.push_back(new Cooper3dText());
+		scenes.push_back(new chrisVeraInterruptions());
+		scenes.push_back(new johnWhitneyShader02());
+		scenes.push_back(new chrisRileyCascando());
+		scenes.push_back(new memoAktenScene());
+		scenes.push_back(new submotionOrchestraScene());
+		scenes.push_back(new RoyWhitney1());
+		scenes.push_back(new veraFscene());
+		scenes.push_back(new robbyMolnarScene() );
+		scenes.push_back(new veraAnimatedScene() );
+		scenes.push_back(new robbyRileyScene() );
+		scenes.push_back(new robbyMenkmanScene());
+		scenes.push_back(new johnWhitneyShader01());
+		scenes.push_back(new anastasisRileyScene());
+		scenes.push_back(new loloWhitney());
+		scenes.push_back(new loloVera());
+		scenes.push_back(new andyMenkmanJpg());
+		scenes.push_back(new andyMenkmanPng());
+		scenes.push_back(new manfredMohrP196A());
+		scenes.push_back(new veraMolnarTrapezium());
+		scenes.push_back(new loloVera2());
+		scenes.push_back(new cantusFirmusRiley());
+		scenes.push_back(new aaronMarcusHieroglyphB());
+		//scenes.push_back(new veraMolnarLines68());
+		scenes.push_back(new alexLissamojiWhitney());
+		scenes.push_back(new yosukeVeraSansTitre());
+		//scenes.push_back(new alexGifPaletteDitherMenkman());
+		scenes.push_back(new yeseulMenkmanInstitution());
+		scenes.push_back(new yeseulCooperMessages());
+		scenes.push_back(new yeseulWhitneyScene());
+		scenes.push_back(new yeseulRileyBrokencircle());
+		scenes.push_back(new yosukeJohnWhitneyMatrix());
+		scenes.push_back(new mgsCooperSymbols());
+		scenes.push_back(new mgsRileyDiamonds());
+		scenes.push_back(new mgsRileyEllipsesAndSquares());
+		scenes.push_back(new mgsVeraMolnarLineStudy());
+		scenes.push_back(new mgsMaedaTimePainter());
+		scenes.push_back(new mgsRileyDescending());
+		scenes.push_back(new olegVeraV());
+		scenes.push_back(new sarahgpRileyCircle());
+		scenes.push_back(new mwalczykVeraSquares());
+
+	#endif
+	
+	
 #ifdef RANDOMIZE_SCENES
     ofRandomize(scenes);
 #endif
@@ -204,36 +380,11 @@ void sceneManager::setup(){
     ofAddListener(sync.recorder.recStartE, this, &sceneManager::recordingStart);
     ofAddListener(sync.recorder.recEndE, this, &sceneManager::recordingEnd);
 #endif
-    
-    // Not using
-    // scenes.push_back(new chrisMurielCooper());
-    gui.setDefaultWidth(300);
-    gui.setup("SFPC_d4n", "SFPC_d4n_general_settings.xml");
 
-    gui.add(enableParameterSounds.set("Enable parameter sounds", true));
-    enableParameterSounds.addListener(this, &sceneManager::toggleParameterSounds);
-    gui.add(drawScenePanel.set("draw scene ctrl", true));
-    gui.add(enableMidiUpdate.set("enable midi update", true));
-    gui.add(bAutoPlay.set("Auto Play on scene change", true));
-    gui.add(autoadvanceDelay.set("Autoadvance", 0, 0, 60));
-    gui.add(bSceneWaitForCode.set("Scene wait for code", true));
-    gui.add(bFadeOut.set("Scene fade out", true));
-    gui.add(bAutoAdvance.set("Auto Advance Scene", true));
-#ifdef USE_SCENE_TRANSITIONS
-    gui.add(sceneTweenDuration.set("fadeOutTime", 4.0, 0, 10.0));
-    gui.add(codeTweenDuration.set("fadeInTime", 7.5, 0, 15));
-#endif
-    sync.smoothing.setName("MIDI Smoothing");
-    gui.add(sync.smoothing);
-    gui.add(ofSmoothing.set("OF Smoothing", 0.02, 0.01, 1));
-    
-    
-    gui.loadFromFile("SFPC_d4n_general_settings.xml");
-//    gui.setWidthElements(300);
-//    gui.setDefaultWidth(300);
-    gui.setPosition(ofGetWidth() - gui.getShape().width-20,  ofGetHeight() - gui.getShape().getHeight() - 100);
-    
-    
+	
+	setupGui();
+	
+	
     sceneFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGBA, 4);
   //dimmedSceneFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGBA, 4);
     codeFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGB, 1);
@@ -275,11 +426,6 @@ void sceneManager::setup(){
         scene->postSetup();
     }
     
-    
-    //    for (int i = 0; i< scenes.size(); i++){
-    //        scenes[i]->setup();
-    //    }
-    
     isTransitioning = false;
     currentScene = 0;
 
@@ -290,10 +436,7 @@ void sceneManager::setup(){
 #endif
     shouldDrawCode = true;
     
-    panel = new ofxPanel();
-    panel->setup("scene settings");
-    panel->add(scenes[currentScene]->parameters);
-    panel->setPosition(520+504+20, 20);
+	loadSceneGui();
 
     codeEnergyDecayRate.set("codeDecay", 0.1, 0, 0.3);
     codeEnergyPerFrame.set("codeEnergyPerFrame", 0.15, 0, 0.4);
@@ -333,6 +476,36 @@ void sceneManager::startScene(int whichScene){
     
 }
 #ifdef USE_MIDI_PARAM_SYNC
+
+//-----------------------------------------------------------------------------------
+void sceneManager::setupGui(){
+	gui.setDefaultWidth(300);
+	gui.setup("SFPC_d4n", "SFPC_d4n_general_settings.xml");
+	
+	gui.add(enableParameterSounds.set("Enable parameter sounds", true));
+	enableParameterSounds.addListener(this, &sceneManager::toggleParameterSounds);
+	gui.add(drawScenePanel.set("draw scene ctrl", true));
+	gui.add(enableMidiUpdate.set("enable midi update", true));
+	gui.add(bAutoPlay.set("Auto Play on scene change", true));
+	gui.add(autoadvanceDelay.set("Autoadvance", 0, 0, 60));
+	gui.add(bSceneWaitForCode.set("Scene wait for code", true));
+	gui.add(bFadeOut.set("Scene fade out", true));
+	gui.add(bAutoAdvance.set("Auto Advance Scene", true));
+#ifdef USE_SCENE_TRANSITIONS
+	gui.add(sceneTweenDuration.set("fadeOutTime", 4.0, 0, 10.0));
+	gui.add(codeTweenDuration.set("fadeInTime", 7.5, 0, 15));
+#endif
+	sync.smoothing.setName("MIDI Smoothing");
+	gui.add(sync.smoothing);
+	gui.add(ofSmoothing.set("OF Smoothing", 0.02, 0.01, 1));
+	
+	
+	gui.loadFromFile("SFPC_d4n_general_settings.xml");
+	//    gui.setWidthElements(300);
+	//    gui.setDefaultWidth(300);
+	gui.setPosition(ofGetWidth() - gui.getShape().width-20,  ofGetHeight() - gui.getShape().getHeight() - 100);
+	
+}
 //-----------------------------------------------------------------------------------
 void sceneManager::recordingStart(){
     scenes[currentScene]->reset();
@@ -545,7 +718,7 @@ void sceneManager::drawGui(){
     
     if (bDrawGui){
         if (drawScenePanel)
-            panel->draw();
+            sceneGui.draw();
         codeControls.draw();
         
         gui.draw();
@@ -943,12 +1116,16 @@ void sceneManager::nextScene(bool forward){
 
     startScene(currentScene);
 
-    panel->clear();
-    panel->setup("scene settings");
-    panel->add(scenes[currentScene]->parameters);
-    
-    panel->setPosition(520+504+20, 20);
+	loadSceneGui();
 };
+//-----------------------------------------------------------------------------------
+void sceneManager::loadSceneGui(){
+	
+	sceneGui.clear();
+    sceneGui.setup("scene settings");
+    sceneGui.add(scenes[currentScene]->parameters);
+    sceneGui.setPosition(520+504+20, 20);
+}
 //-----------------------------------------------------------------------------------
 void sceneManager::advanceScene(){
     stopPlaying();
