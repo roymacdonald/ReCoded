@@ -7,10 +7,6 @@
 #include "interactionManager.h"
 
 
-
-
-
-
 class ofApp : public ofBaseApp{
 
 	public:

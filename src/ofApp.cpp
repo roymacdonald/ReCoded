@@ -11,10 +11,6 @@ void ofApp::setup(){
 	ofSetFullscreen(true);
 	//ofHideCursor();
 
-
-	//-------------------------------------------
-	// fake interactive
-	prevMouse.set(mouseX, mouseY);
 	//-------------------------------------------
 	IM.setLEDs(1,1,1,1);
 
@@ -24,27 +20,6 @@ void ofApp::setup(){
 void ofApp::update(){
 	SM.update();
 	IM.update();
-
-
-
-	//-------------------------------------------
-	// fake interactive
-//	ofPoint currentPoint(mouseX, mouseY);
-//	ofPoint diff = currentPoint - prevMouse;
-//	diff /= ofPoint(ofGetWidth(), ofGetHeight());
-//	if (bToggleUseRecording == false) {
-//
-//			SM.scenes[SM.currentScene]->updateInteractiveParams(diff.x, 0);
-//			SM.scenes[SM.currentScene]->updateInteractiveParams(diff.y, 1);
-//	}
-//	prevMouse.set(mouseX, mouseY);
-//    
-//    
-    
-    // interactivity...
-   
-    
-	//-------------------------------------------
 
 
 }
