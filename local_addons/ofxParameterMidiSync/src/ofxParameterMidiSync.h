@@ -40,7 +40,8 @@ public:
     void reset();
     
     void drawDebug();
-    
+    void drawDebug(float x, float y);
+	
     bool isLearning(){return bLearning;}
     bool isUnlearning(){return bUnlearning;}
     

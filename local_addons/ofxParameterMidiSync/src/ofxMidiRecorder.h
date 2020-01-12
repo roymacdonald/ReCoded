@@ -47,24 +47,25 @@ public:
 class ofxMidiRecordingEvent{
 public:
     
-    ofxMidiRecordingEvent(){
-        time = 0;
-    }
-    ofxMidiRecordingEvent(const ofxMidiMessage& from, uint64_t time){
-        this->time = time;
-        this->message = from;
-    }
-    ofxMidiRecordingEvent(const ofxMidiRecordingEvent& from){
-        this->time = from.getTime();
-        this->message = from.getMessage();
-    }
-    ofxMidiRecordingEvent& operator=(const ofxMidiRecordingEvent& from){
-        this->time = from.getTime();
-        this->message = from.getMessage();
-    }
-    
-    uint64_t getTime() const{return time;}
-    const ofxMidiMessage& getMessage() const {return message;}
+//    ofxMidiRecordingEvent(){
+//        time = 0;
+//    }
+//    ofxMidiRecordingEvent(const ofxMidiMessage& from, uint64_t time){
+//        this->time = time;
+//        this->message = from;
+//    }
+//    ofxMidiRecordingEvent(const ofxMidiRecordingEvent& from){
+//        this->time = from.getTime();
+//        this->message = from.getMessage();
+//    }
+//    ofxMidiRecordingEvent& operator=(const ofxMidiRecordingEvent& from){
+//        this->time = from.getTime();
+//        this->message = from.getMessage();
+//		return *this;
+//    }
+//
+//    uint64_t getTime() const{return time;}
+//    const ofxMidiMessage& getMessage() const {return message;}
     //    ofxMidiMessage getMessage;
     //protected:
     uint64_t time;

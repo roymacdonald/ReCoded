@@ -257,14 +257,16 @@ bool ofxParameterMidiSync::load(string path){
 }
 //--------------------------------------------------------------
 void ofxParameterMidiSync::drawDebug(){
-    
+	drawDebug(20, ofGetHeight() - 60);
+}
+void ofxParameterMidiSync::drawDebug(float x, float y){
     string str = "Learning: " + (string)(bLearning?"YES":"NO")+"\n";
     str += "learningParameter: " + (string)((learningParameter==NULL)?"NULL": learningParameter->getName())+"\n";
     str += "controlNum: " + ofToString(midiMessage.control) + "\n";
     str += "lastMidiMessage: " + midiMessage.toString() + "\n";
 //	str += "is Recording: " +(string)(?"YES":"NO");
 	
-    ofDrawBitmapStringHighlight(str, 20, ofGetHeight() - 60);
+    ofDrawBitmapStringHighlight(str, x,y);
     
 }
 //--------------------------------------------------------------

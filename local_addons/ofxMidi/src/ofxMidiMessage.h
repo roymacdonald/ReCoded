@@ -43,7 +43,7 @@ public:
 /// message types ie pitch is only set for noteon, noteoff, and
 /// polyaftertouch messages
 ///
-class ofxMidiMessage: public ofEventArgs {
+class ofxMidiMessage{
 
 public:
 

@@ -44,7 +44,9 @@ void ofxMidiRecorder::newMidiMessage(ofxMidiMessage& msg) {
             record();
         }else{
             if (bRecording) {
-                recData.push_back(ofxMidiRecordingEvent(msg,ofGetElapsedTimeMillis() - recordingStartTime));
+				recData.push_back(ofxMidiRecordingEvent());
+				recData.back().message = msg;
+				recData.back().time = ofGetElapsedTimeMillis() - recordingStartTime;
             }
         }
     }
