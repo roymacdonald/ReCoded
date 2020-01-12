@@ -166,12 +166,12 @@ void sceneManager::setup(){
     font.load("fonts/ProggySmall.fon", 8, false ,false, false, 0, 96);
     
     
-    
+	{
     //-------------------------------  alice
     
     scenes.push_back(new aliceWhitney()); // has recording
     
-    
+#ifdef SHOW_MIT_2019
     //------------------------------- gaurav
     
     scenes.push_back(new gauravWhitney2()); // has recording
@@ -280,6 +280,8 @@ void sceneManager::setup(){
 //    scenes.push_back(new mitScene1());
 //    scenes.push_back(new exampleScene());
 
+#endif
+	
 	/// SFPC scenes
 	
 	
@@ -316,12 +318,12 @@ void sceneManager::setup(){
 
 	#endif
 	#ifdef SHOW_SFPC_FALL_2015
-		scenes.push_back(new zachTest());
+//		scenes.push_back(new zachTest());
 		scenes.push_back(new CooperBauhaus());  // this might make for a good start scene -Robby & Becca
 		scenes.push_back(new RileyArcsRoy());
 		scenes.push_back(new rachelScene());
 		scenes.push_back(new rodrigoBelfort());
-		scenes.push_back(new Cooper3dText());
+//		scenes.push_back(new Cooper3dText());
 		scenes.push_back(new chrisVeraInterruptions());
 		scenes.push_back(new johnWhitneyShader02());
 		scenes.push_back(new chrisRileyCascando());
@@ -348,7 +350,7 @@ void sceneManager::setup(){
 		scenes.push_back(new alexLissamojiWhitney());
 		scenes.push_back(new yosukeVeraSansTitre());
 		//scenes.push_back(new alexGifPaletteDitherMenkman());
-		scenes.push_back(new yeseulMenkmanInstitution());
+//		scenes.push_back(new yeseulMenkmanInstitution());
 		scenes.push_back(new yeseulCooperMessages());
 		scenes.push_back(new yeseulWhitneyScene());
 		scenes.push_back(new yeseulRileyBrokencircle());
@@ -365,7 +367,7 @@ void sceneManager::setup(){
 
 	#endif
 	
-	
+}
 #ifdef RANDOMIZE_SCENES
     ofRandomize(scenes);
 #endif
@@ -386,22 +388,10 @@ void sceneManager::setup(){
 	
 	
     sceneFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGBA, 4);
-  //dimmedSceneFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGBA, 4);
-    codeFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGB, 1);
-    
-   // codeFbo.getTexture().setTextureMinMagFilter(GL_NEAREST, GL_NEAREST);
-    
-  //dimmerShader.load("scenes/dimmer");
 
-    lastFrame.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, OF_PIXELS_RGBA);
-    currFrame.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, OF_PIXELS_RGBA);
-
-    //  transitionFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGB32F_ARB);
-    transitionFbo.begin();
-    ofSetColor(0,255);
-    ofDrawRectangle(0, 0, VISUALS_WIDTH, VISUALS_HEIGHT);
-    transitionFbo.end();
-    transitionFbo.draw(0,0);
+    codeFbo.allocate(CODE_WIDTH, CODE_HEIGHT, GL_RGB, 1);
+	codeFbo.getTexture().setTextureMinMagFilter(GL_NEAREST,GL_NEAREST);
+											
     
 #ifdef USE_EXTERNAL_SOUNDS
     // open an outgoing connection
@@ -436,7 +426,6 @@ void sceneManager::setup(){
 #endif
     shouldDrawCode = true;
     
-	loadSceneGui();
 
     codeEnergyDecayRate.set("codeDecay", 0.1, 0, 0.3);
     codeEnergyPerFrame.set("codeEnergyPerFrame", 0.15, 0, 0.4);
@@ -444,8 +433,11 @@ void sceneManager::setup(){
     codeControls.add(codeEnergyDecayRate);
     codeControls.add(codeEnergyPerFrame);
     codeControls.loadFromFile("codeSettings.xml");
-    codeControls.setPosition(520+504+20, 500);
+//    codeControls.setPosition(520+504+20, 500);
     
+	loadSceneGui();
+	
+	
     startScene(currentScene);
 
     screenRect.set(0, 0, VISUALS_WIDTH+CODE_X_POS, VISUALS_HEIGHT);
@@ -498,7 +490,6 @@ void sceneManager::setupGui(){
 	sync.smoothing.setName("MIDI Smoothing");
 	gui.add(sync.smoothing);
 	gui.add(ofSmoothing.set("OF Smoothing", 0.02, 0.01, 1));
-	
 	
 	gui.loadFromFile("SFPC_d4n_general_settings.xml");
 	//    gui.setWidthElements(300);
@@ -725,27 +716,37 @@ void sceneManager::drawGui(){
     }
     
 }
-
 //-----------------------------------------------------------------------------------
-void sceneManager::draw(){
-    sync.update();
-    codeFbo.begin();
+void sceneManager::renderSceneFbo(){
+	if (shouldDrawScene) {
+		   sceneFbo.begin();
+		   ofClear(0,0,0,255);
+		   ofPushStyle();
+		   scenes[currentScene]->draw();
+		   ofPopStyle();
+		   ofClearAlpha();
+		   sceneFbo.end();
+	}
+}
+//-----------------------------------------------------------------------------------
+void sceneManager::renderCodeFbo(){
+	codeFbo.begin();
     ofSetColor(255,255,255);
-    float pct = (ofGetElapsedTimef() - TM.setupTime) / TM.animTime;
+    pctCode = (ofGetElapsedTimef() - TM.setupTime) / TM.animTime;
     
-    if (pct > 1) pct = 1;
-    if (pct < 0) pct = 0;
+    if (pctCode > 1) pctCode = 1;
+    if (pctCode < 0) pctCode = 0;
     
-    if (pct < 0.5){
-        pct *= 2;
-        pct  = powf(pct, 3.0);
-        pct *= 0.5;
+    if (pctCode < 0.5){
+        pctCode *= 2;
+        pctCode  = powf(pctCode, 3.0);
+        pctCode *= 0.5;
     } else {
-        pct -= 0.5;
-        pct *= 2.0;
-        pct  = powf(pct, 1.0/3.0);
-        pct *= 0.5;
-        pct += 0.5;
+        pctCode -= 0.5;
+        pctCode *= 2.0;
+        pctCode  = powf(pctCode, 1.0/3.0);
+        pctCode *= 0.5;
+        pctCode += 0.5;
     }
 
     ofClear(0,0,0,255);
@@ -757,29 +758,29 @@ void sceneManager::draw(){
     
     bool bShiftUp = false, bShiftLeft = false;
     
-    if (lastLetterY > (VISUALS_HEIGHT-20)) {
+    if (lastLetterY > (CODE_HEIGHT-20)) {
         bShiftUp = true;
     }
 
-    if (maxLetterX > (VISUALS_WIDTH-20)) {
+    if (maxLetterX > (CODE_WIDTH-20)) {
         bShiftLeft = true;
     }
     
     if (bShiftUp && !introCursor) {
-        float dy = lastLetterY - (VISUALS_HEIGHT-20);
+        float dy = lastLetterY - (CODE_HEIGHT-20);
         ofPushMatrix();
         ofTranslate(0,-dy);
     }
 
     if (bShiftLeft && !introCursor) {
-        float dx = maxLetterX - (VISUALS_WIDTH-20);
+        float dx = maxLetterX - (CODE_WIDTH-20);
         dx = min((int)dx, 20);
         ofPushMatrix();
         ofTranslate(-dx,0);
     }
 
     const int codeDefaultStartX = 40;
-    int countLetters = 0;
+	countLetters = 0;
     int xStart = codeDefaultStartX;
     int x = xStart;
     
@@ -791,7 +792,7 @@ void sceneManager::draw(){
     vector<int> lineHasAnimParam;
 
     lineHasAnimParam.push_back(-1);
-    for (int i = 0; i < letters.size() * pct; i++) {
+    for (int i = 0; i < letters.size() * pctCode; i++) {
         if (letters[i].type == CHARACTER_PARAM) {
             float activation = TM.paramEnergy[letters[i].idOfChar];
             if (activation > 0.000001 && activation > maxActivationPerLine) {
@@ -812,8 +813,8 @@ void sceneManager::draw(){
     }
 
     // Set line Y based on how many lines we're going to draw over the total height
-    int maxLinesWithoutScroll = (VISUALS_HEIGHT - 60*2) / 13;
-    int maxLinesWithScroll = (VISUALS_HEIGHT-10*2) / 13;
+    int maxLinesWithoutScroll = (CODE_HEIGHT - 60*2) / 13;
+    int maxLinesWithScroll = (CODE_HEIGHT-10*2) / 13;
     int y;
     
     if (nLines <= maxLinesWithoutScroll) {
@@ -830,7 +831,7 @@ void sceneManager::draw(){
     currentLine = 0;
     bool nonEmptyLetter = false;
     
-    for (int i = 0; i < letters.size() * pct; i++){
+    for (int i = 0; i < letters.size() * pctCode; i++){
         
         int lineBrightness = 255;
         if (lineHasAnimParam[currentLine] < 0) {
@@ -876,9 +877,9 @@ void sceneManager::draw(){
     
     // Decide if we're going to draw a cursor
     if (!isTransitioning) {
-        if (pct < 0.1) {
-            drawCursor = int(letters.size() * pct) % 3 == 0;
-        } else if (pct > 0.1 && pct < 1) {
+        if (pctCode < 0.1) {
+            drawCursor = int(letters.size() * pctCode) % 3 == 0;
+        } else if (pctCode > 0.1 && pctCode < 1) {
             drawCursor = true;
         } else if (pctDelay > 1) {
             x = xStart;
@@ -921,50 +922,35 @@ void sceneManager::draw(){
 
     codeFbo.end();
     
-
+}
+//-----------------------------------------------------------------------------------
+void sceneManager::draw(){
+	draw(ofRectangle(CODE_X_POS, 0, CODE_WIDTH, CODE_HEIGHT) ,ofRectangle(0,0,VISUALS_WIDTH, VISUALS_HEIGHT));
+}
+//-----------------------------------------------------------------------------------
+void sceneManager::draw(const ofRectangle& codeRect, const ofRectangle& sceneRect, bool bDrawCode){
+    sync.update();
+    
+	renderCodeFbo();
+	
+	if( bDrawCode){
+		codeFbo.draw(codeRect);
+	}
+	renderSceneFbo();
     if (shouldDrawScene) {
-        sceneFbo.begin();
-        ofClear(0,0,0,255);
-        ofPushStyle();
-        scenes[currentScene]->draw();
-        ofPopStyle();
-        ofClearAlpha();
-        sceneFbo.end();
-        
-        // For sound and for kicks
-        //computeMotion(sceneFbo);
-//
-//        float dimAmt = 1;
-//        if (frameBrightness > 0.5) {
-//            dimAmt = ofMap(frameBrightness, 0.5, 1, 1, 0.5);
-//        }
-
-//        dimmedSceneFbo.begin();
-//        dimmerShader.begin();
-//        dimmerShader.setUniformTexture("texture0", sceneFbo.getTexture(), 0);
-//        dimmerShader.setUniform1f("dimAmt", dimAmt);
-//        ofSetColor(255);
-//        ofClearAlpha();
-//        ofDrawRectangle(0, 0, VISUALS_WIDTH, VISUALS_HEIGHT);
-//        dimmerShader.end();
-//        dimmedSceneFbo.end();
-//        dimmedSceneFbo.draw(1,0,VISUALS_WIDTH, VISUALS_HEIGHT);
-//        dimmedSceneFbo.draw(0,0,VISUALS_WIDTH, VISUALS_HEIGHT);
-      sceneFbo.draw(0,0,VISUALS_WIDTH, VISUALS_HEIGHT);
-//sceneFbo.draw(0,1,VISUALS_WIDTH, VISUALS_HEIGHT);
-
+		sceneFbo.draw(sceneRect);
         if (fadingIn) {
             float fadeOpacityRaw = ofMap(pctDelay, FADE_DELAY_MIN, FADE_DELAY_MAX, 0, PI);
             float fadeOpacityShaped = ofMap(cos(fadeOpacityRaw), 0, 1, 0, 255);
             ofSetColor(0, fadeOpacityShaped);
             ofFill();
-            ofDrawRectangle(0, 0, VISUALS_WIDTH+1, VISUALS_HEIGHT);
+			ofDrawRectangle(sceneRect.x, sceneRect.y, sceneRect.width+1, sceneRect.height);
         }
     } else {
         ofSetColor(0);
         ofFill();
         ofClearAlpha();
-        ofDrawRectangle(0, 0, VISUALS_WIDTH+1, VISUALS_HEIGHT);
+		ofDrawRectangle(sceneRect.x, sceneRect.y, sceneRect.width+1, sceneRect.height);
     }
 
     // Draw overlay rectangles on fade out
@@ -974,8 +960,9 @@ void sceneManager::draw(){
         ofFill();
         
         // Draw over the frames
-        ofDrawRectangle(0, 0, VISUALS_WIDTH+1, VISUALS_HEIGHT);
-        ofDrawRectangle(CODE_X_POS-1, 0, VISUALS_WIDTH+2, VISUALS_HEIGHT);
+		ofDrawRectangle(sceneRect.x, sceneRect.y, sceneRect.width+1, sceneRect.height);
+		ofDrawRectangle(codeRect.x-1, codeRect.y, codeRect.width+2, codeRect.height);
+
     }
 
   
@@ -983,13 +970,13 @@ void sceneManager::draw(){
     if (!shouldDrawScene){
         ofSetColor(0,1);
         ofFill();
-        ofDrawRectangle(0,0,VISUALS_WIDTH, VISUALS_HEIGHT);
+		ofDrawRectangle(sceneRect);
         int diff = (countLetters - (int)lettersLastFrame);
         if (diff > 0 && (ofGetElapsedTimeMillis()-lastPlayTime > ofRandom(50,87))) {
             lastPlayTime = ofGetElapsedTimeMillis();
             
 #ifdef USE_EXTERNAL_SOUNDS
-            if (ofNoise(pct*10, ofGetElapsedTimef()/10.0) > 0.5) {
+            if (ofNoise(pctCode*10, ofGetElapsedTimef()/10.0) > 0.5) {
                 oscMessage.clear();
                 oscMessage.setAddress("/d4n/keystroke");
                 oscMessage.addIntArg(roundf(ofRandom(1,2)));
@@ -1001,7 +988,7 @@ void sceneManager::draw(){
                 oscSender.sendMessage(oscMessage, false);
             }
 #else
-            if (ofNoise(pct*10, ofGetElapsedTimef()/10.0) > 0.5){
+            if (ofNoise(pctCode*10, ofGetElapsedTimef()/10.0) > 0.5){
                 TM.keystroke2Sound.play();
                 TM.keystroke2Sound.setSpeed(ofRandom(0.9, 1.1));
                 
@@ -1016,78 +1003,10 @@ void sceneManager::draw(){
     }
 #endif
 
-
-    
-    // let's draw some info!
     
     ofSetColor(255);
-    //
-    //    ofDrawBitmapString("drawing scene " + ofToString(currentScene) +
-    //                       "/" + ofToString(scenes.size()) +
-    //                       "\t\t(" + scenes[currentScene]->author  + ", " +
-    //                       scenes[currentScene]->originalArtist + ")",
-    //                       20, VISUALS_HEIGHT + 50);
-    //
-    //
-    //    string str = "Recorded events: " + ofToString(sync.recorder.getData().size())+"\n";
-    //    str += "Is Recording: " + (string)(sync.recorder.isRecording()?"TRUE":"FALSE")+"\n";
-    //    str += "Play events: " + ofToString(sync.player.data.size())+"\n";
-    //    str += "Is Playing: " + (string)(sync.player.bPlaying?"TRUE":"FALSE")+"\n";
-    //    str += "Pre-recorded events: " + ofToString(scenes[currentScene]->recData.size())+"\n";
-    //    str += "Current Scene Time: " + ofToString(scenes[currentScene]->getElapsedTimef())+"\n";
-    //    str += "Current Scene Duration: " + ofToString(scenes[currentScene]->sceneDuration)+"\n";
-    //    str += "Current Scene is done: " + (string)(scenes[currentScene]->isSceneDone()?"TRUE":"FALSE");
-    //
-    //    ofDrawBitmapString(str, 20, VISUALS_HEIGHT + 100);
 }
 
-//void sceneManager::computeMotion(ofFbo &fbo) {
-//    fbo.readToPixels(currFrame);
-//
-//    const unsigned char *currPixels = currFrame.getData();
-//    const unsigned char *lastPixels = lastFrame.getData();
-//
-//    long long sumX = 0, sumY = 0, sumMotion = 0, sumBrightness = 0, totalPixels = 1, totalThresh = 1;
-//    for (int i = 0; i < VISUALS_WIDTH * VISUALS_HEIGHT * 4; i += 4) {
-//        int val = (currPixels[i] + currPixels[i+1] + currPixels[i+2]) / 3;
-//        int lastVal = (lastPixels[i] + lastPixels[i+1] + lastPixels[i+2]) / 3;
-//
-//        sumBrightness += val;
-//        sumMotion += abs(val - lastVal);
-//        totalPixels++;
-//
-//        if (val > 127) {
-//            int x = (i / 4) % VISUALS_WIDTH;
-//            int y = (i / 4) / VISUALS_WIDTH;
-//
-//            sumX += x;
-//            sumY += y;
-//            totalThresh++;
-//        }
-//    }
-//
-//    lastCentroid.set(centroid);
-//    centroid.set(sumX / totalThresh, sumY / totalThresh);
-//
-//    frameBrightness = ((float)sumBrightness / totalPixels) / 255.0;
-//
-//    float currMotion = ((float)sumMotion / totalPixels) / 255.0;
-//    float shapedMotion = sqrt(currMotion);
-//    motion += (shapedMotion - motion) * 0.1;
-//
-//#ifdef USE_EXTERNAL_SOUNDS
-////    oscMessage.clear();
-////    oscMessage.setAddress("/d4n/motion");
-////    oscMessage.addFloatArg(motion);
-////    oscMessage.addFloatArg(centroid.x);
-////    oscMessage.addFloatArg(centroid.y);
-////    oscMessage.addFloatArg(centroid.x - lastCentroid.x);
-////    oscMessage.addFloatArg(centroid.y - lastCentroid.y);
-////    oscSender.sendMessage(oscMessage, false);
-//#endif
-//
-//    currFrame.pasteInto(lastFrame, 0, 0);
-//}
 
 //-----------------------------------------------------------------------------------
 void sceneManager::nextScene(bool forward){
@@ -1117,14 +1036,17 @@ void sceneManager::nextScene(bool forward){
     startScene(currentScene);
 
 	loadSceneGui();
-};
+}
 //-----------------------------------------------------------------------------------
 void sceneManager::loadSceneGui(){
 	
 	sceneGui.clear();
     sceneGui.setup("scene settings");
     sceneGui.add(scenes[currentScene]->parameters);
-    sceneGui.setPosition(520+504+20, 20);
+    sceneGui.setPosition(20, 20);
+	auto r = sceneGui.getShape();
+	gui.setPosition(r.getTopRight() + glm::vec3(30, 0, 0));
+	codeControls.setPosition(r.getBottomLeft() + glm::vec3(0, 30, 0));
 }
 //-----------------------------------------------------------------------------------
 void sceneManager::advanceScene(){

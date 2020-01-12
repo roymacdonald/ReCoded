@@ -44,6 +44,7 @@ public:
     void setup();
     void update();
     void draw();
+	void draw(const ofRectangle& codeRect, const ofRectangle& sceneRect, bool bDrawCode = false);
     void drawType();
     
     void advanceScene();
@@ -52,12 +53,12 @@ public:
     
   //    float motion, frameBrightness;
   //    ofPoint centroid, lastCentroid;
-      ofPixels lastFrame, currFrame;
+//      ofPixels lastFrame, currFrame;
   //void computeMotion(ofFbo &fbo);
     
     void startScene(int whichScene);
   
-    ofFbo transitionFbo;
+//    ofFbo transitionFbo;
     ofFbo sceneFbo;
   //ofFbo dimmedSceneFbo;
     ofFbo codeFbo;
@@ -138,5 +139,10 @@ public:
     void drawGui();
     
     bool bDrawGui;
-    
+	
+	void renderSceneFbo();
+	void renderCodeFbo();
+	
+	int countLetters = 0;
+	float pctCode = 0;
 };

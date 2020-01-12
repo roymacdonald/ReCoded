@@ -140,8 +140,8 @@ void baseScene::enableMidi() {
 
   const int mx = 127;
   for (int i = 0; i < recData.size() && i < parameters.size(); ++i) {
-    int whichParam = recData[i].getMessage().control;
-    int value = recData[i].getMessage().value;
+    int whichParam = recData[i].message.control;
+    int value = recData[i].message.value;
 
     if (paramsSet[i])
       continue;
@@ -253,15 +253,15 @@ void baseScene::updateInteractiveParams(float valChangeAsPct, int param, float a
 
 void baseScene::updateMidiParams() {
     
-  cout << "here " << endl;
+//  cout << "here " << endl;
     
   int nToCheck = min((int)parameters.size(), 8);
   
-  cout << "nToCheck " << nToCheck << endl;
+//  cout << "nToCheck " << nToCheck << endl;
     
     for (int i = 0; i < nToCheck; ++i) {
     char paramType = paramTypes[i];
-     cout << "param type " << paramType << endl;
+//     cout << "param type " << paramType << endl;
         
     if (paramType == 'b') {
       ofParameter<bool> &midiParam = midiParameters.getBool(i);
@@ -277,7 +277,7 @@ void baseScene::updateMidiParams() {
                                 midiParameters.getInt(i).getMax());
         }
         
-        cout << "midiParam " << midiParam << " - param - " <<  param << endl;
+//        cout << "midiParam " << midiParam << " - param - " <<  param << endl;
         
       if (bUpdateParamFromRecording)param.set(midiParam);
     } else if (paramType == 'f') {
@@ -288,10 +288,11 @@ void baseScene::updateMidiParams() {
         continue;
 
       float diff = midiParam - param;
-      if (fabs(diff) > 0.0001)
+	if (fabs(diff) > 0.0001){
         if (bUpdateParamFromRecording) param.set(param + diff * baseScene::smoothingSpeed);
-        else
+	}else{
           if (bUpdateParamFromRecording) param.set(midiParam);
+		}
     }
   }
 }

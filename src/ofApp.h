@@ -36,5 +36,11 @@ class ofApp : public ofBaseApp{
     
         ofPoint prevMouse;
     
-    
+#ifdef DRAW_TWO_SCREENS	
+	void setScreenRects();
+	int numScreens = 0;
+	ofRectangle codeRect, sceneRect;
+	vector<ofRectangle>screenRects;
+#endif
+	
 };

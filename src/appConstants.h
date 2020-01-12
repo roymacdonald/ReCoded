@@ -19,14 +19,16 @@
 //THis will show all the other sketches; the ones that are not either for microsoft lunch or by sfpc2017
 #define SHOW_OTHERS
 
+#define SHOW_MIT_2019
+
 // assume that visuals and code are the same here....
 // and also assuming our screen is square :)
 
-#define VISUALS_WIDTH 720
-#define VISUALS_HEIGHT 720
+#define VISUALS_WIDTH 1080
+#define VISUALS_HEIGHT 1080
 
-#define CODE_WIDTH VISUALS_WIDTH
-#define CODE_HEIGHT VISUALS_HEIGHT
+#define CODE_WIDTH 540
+#define CODE_HEIGHT 960
 
 
 
@@ -34,10 +36,14 @@
 
 
 
-#define DRAW_TWO_UP       // draw two side by side in a 1920x1080 window
+//#define DRAW_TWO_UP       // draw two side by side in a 1920x1080 window
 //#define DRAW_ONE_BIG      // draw one of these big centered in the screen
 
 //#define RANDOMIZE_SCENES    // shuffle the order of the scenes upon startup
+
+#define DRAW_TWO_SCREENS // will draw on two screens, the visuals on one and the code on the other
+
+
 
 //#define
 

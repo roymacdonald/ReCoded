@@ -1,4 +1,7 @@
 #include "ofApp.h"
+#ifdef DRAW_TWO_SCREENS
+#include "GLFW/glfw3.h"
+#endif
 
 
 
@@ -7,13 +10,21 @@ void ofApp::setup(){
 	SM.setup();
 	IM.setup();
 
-	//ofSetWindowPosition(2000, 0);
-	ofSetFullscreen(true);
+	#ifdef DRAW_TWO_SCREENS
+		setScreenRects();
+		ofSetFullscreen(true);
+		
+	#else
+		//ofSetWindowPosition(2000, 0);
+		ofSetFullscreen(true);
+	#endif
+
 	//ofHideCursor();
 
 	//-------------------------------------------
 	IM.setLEDs(1,1,1,1);
 
+	
 }
 
 //--------------------------------------------------------------
@@ -27,17 +38,23 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 	ofBackground(10);
-	ofPushMatrix();
+	
 
 
 	// cout << "------------------ " << SM.pctDelay << endl;
-
+#ifdef DRAW_TWO_SCREENS
+	ofSetColor(255);
+	if(numScreens  > 1){
+		SM.draw(codeRect, sceneRect, true);
+	}else{
+		ofDrawBitmapStringHighlight("Can not draw as it seems to be less than 2 screens", 30,30);
+	}
+	if(SM.bDrawGui) SM.drawGui();
+	
+	
+#else
+	ofPushMatrix();
 #ifdef DRAW_TWO_UP
-
-//  ofLine(0,0,520,520);
-//  ofLine(520,0, 520+520,520);
-
-    
 #ifndef BIG_TV
     
     ofPushMatrix();
@@ -47,22 +64,6 @@ void ofApp::draw(){
     ofPopMatrix();
     
 #endif
-    
-
-    if (SM.pctDelay < SCENE_PRE_TRANSITION_FADE || SM.isTransitioning) {
-        IM.turnOffLEDs();
-    }
-	if (SM.pctDelay < FADE_DELAY_MIN) {
-		// typing is happening...
-		//SM.codeFbo.draw(0, 0, 520,520);
-	}
-    if (SM.shouldDrawScene && !SM.isTransitioning) {
-		int numParams = MIN(SM.scenes[SM.currentScene]->midiKnobs.size(),4);
-//        cout << "Number of parameters: " << numParams << endl;
-		IM.setCurrentSceneParameterCount(numParams);
-	}
-    
-    
 #ifndef BIG_TV
 	
     
@@ -103,9 +104,6 @@ void ofApp::draw(){
     
      SM.drawGui();
 #endif
-    
-
-
 #elif defined DRAW_ONE_BIG
 	float scale = 1080.0/(float)(504);
 	float w = scale * 504;
@@ -115,13 +113,26 @@ void ofApp::draw(){
        SM.drawGui();
 #else
 	SM.draw();
-       SM.drawGui();
+	SM.drawGui();
 #endif
-
-
 	ofPopMatrix();
+#endif
     
-    
+
+		if (SM.pctDelay < SCENE_PRE_TRANSITION_FADE || SM.isTransitioning) {
+			IM.turnOffLEDs();
+		}
+//		if (SM.pctDelay < FADE_DELAY_MIN) {
+			// typing is happening...
+			//SM.codeFbo.draw(0, 0, 520,520);
+//		}
+		if (SM.shouldDrawScene && !SM.isTransitioning) {
+			int numParams = MIN(SM.scenes[SM.currentScene]->midiKnobs.size(),4);
+	//        cout << "Number of parameters: " << numParams << endl;
+			IM.setCurrentSceneParameterCount(numParams);
+		}
+		
+	
     if (SM.bDrawGui){
 		stringstream ss;
 		ss << "interaction mode " << (IM.bInteracting == true ? "interacting" : "playback") << endl;
@@ -136,9 +147,19 @@ void ofApp::draw(){
 		ss << "scene rec data size: " << SM.scenes[SM.currentScene]->recData.size() << endl;
 		ss << "Elapsed time: " << SM.scenes[SM.currentScene]->getElapsedTimef() << endl;
 		
+		ss << "codeRect " << codeRect <<endl;
+		ss << "sceneRect " << sceneRect <<endl <<endl;
 		
-		ofDrawBitmapStringHighlight(ss.str(), 100, 540);
-		SM.sync.drawDebug();
+		ss << "Screen Rects: " << endl;
+		for(auto& s: screenRects){
+			ss << "   " << s << endl;
+		}
+		auto p = SM.gui.getShape().getTopRight() + glm::vec3(40,0,0);
+		ofDrawBitmapStringHighlight(ss.str(), p);
+		ofBitmapFont bf;
+		auto bb = bf.getBoundingBox(ss.str(), p.x, p.y);
+		auto bl = bb.getBottomLeft();
+		SM.sync.drawDebug( bl.x, bl.y + 40);
     }
 
 }
@@ -153,7 +174,10 @@ void ofApp::keyPressed(int key){
 	} else if (key == OF_KEY_LEFT) {
 		SM.regressScene();
 	}
-
+	if(key == 'g'){
+		SM.bDrawGui ^= true;
+	}
+	
 	if (key == 'f') {
 		ofToggleFullscreen();
 	}
@@ -219,8 +243,9 @@ void ofApp::mouseExited(int x, int y){
 
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
-
-
+#ifdef DRAW_TWO_SCREENS
+	setScreenRects();
+#endif
 }
 
 //--------------------------------------------------------------
@@ -232,3 +257,31 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
+
+bool sortRects(const ofRectangle& a, const ofRectangle& b ){
+	return a.x < b.x;
+}
+
+#ifdef DRAW_TWO_SCREENS
+//--------------------------------------------------------------
+void ofApp::setScreenRects(){
+	numScreens = 0;
+	auto monitors = glfwGetMonitors(&numScreens);
+	screenRects.resize(numScreens);
+	for(int i = 0; i < numScreens; i++){
+		int x = 0, y = 0;
+		glfwGetMonitorPos(monitors[i],&x,&y);
+		auto mode = glfwGetVideoMode(monitors[i]);
+		screenRects[i].set(x, y, mode->width, mode->height);
+	}
+	ofSort(screenRects, sortRects);
+	
+	if(numScreens > 1){
+		sceneRect.set(0,0,VISUALS_WIDTH, VISUALS_HEIGHT);
+		codeRect.set(0,0,CODE_WIDTH, CODE_HEIGHT);
+		
+		sceneRect.scaleTo(screenRects[0]);
+		codeRect.scaleTo(screenRects[1]);
+	}
+}
+#endif
