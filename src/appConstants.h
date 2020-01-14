@@ -28,6 +28,7 @@
 #define VISUALS_HEIGHT 1080
 
 #define CODE_WIDTH 540
+//#define CODE_HEIGHT 540
 #define CODE_HEIGHT 960
 
 
@@ -39,7 +40,7 @@
 //#define DRAW_TWO_UP       // draw two side by side in a 1920x1080 window
 //#define DRAW_ONE_BIG      // draw one of these big centered in the screen
 
-//#define RANDOMIZE_SCENES    // shuffle the order of the scenes upon startup
+#define RANDOMIZE_SCENES    // shuffle the order of the scenes upon startup
 
 #define DRAW_TWO_SCREENS // will draw on two screens, the visuals on one and the code on the other
 

@@ -13,7 +13,7 @@ void ofApp::setup(){
 	#ifdef DRAW_TWO_SCREENS
 		setScreenRects();
 		ofSetFullscreen(true);
-		
+		ofHideCursor();
 	#else
 		//ofSetWindowPosition(2000, 0);
 		ofSetFullscreen(true);

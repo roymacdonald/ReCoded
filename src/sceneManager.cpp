@@ -68,7 +68,7 @@
 #include "veraAnimatedScene.h"
 #include "robbyMolnarScene.h"
 #include "robbyRileyScene.h"
-#include "yeseulWhitneyScene.h"
+//#include "yeseulWhitneyScene.h"
 #include "johnWhitneyShader01.h"
 #include "johnWhitneyShader02.h"
 #include "RoyWhitney1.h"
@@ -161,17 +161,16 @@ sceneManager::~sceneManager(){
 //-----------------------------------------------------------------------------------
 void sceneManager::setup(){
     
-    bDrawGui = true;
+    bDrawGui = false;
     
     font.load("fonts/ProggySmall.fon", 8, false ,false, false, 0, 96);
     
     
 	{
-    //-------------------------------  alice
-    
-    scenes.push_back(new aliceWhitney()); // has recording
-    
+        
 #ifdef SHOW_MIT_2019
+    //-------------------------------  alice
+    scenes.push_back(new aliceWhitney()); // has recording
     //------------------------------- gaurav
     
     scenes.push_back(new gauravWhitney2()); // has recording
@@ -253,7 +252,7 @@ void sceneManager::setup(){
     
     
     //------------------------------- hannah
-    scenes.push_back(new hannahVera());         // has recording
+//    scenes.push_back(new hannahVera());         // has recording
     scenes.push_back(new hannahMuriel());       // has recording
     scenes.push_back(new hannahMuriel2());      // has recording
     scenes.push_back(new hannahWhitney());      // has recording
@@ -308,7 +307,7 @@ void sceneManager::setup(){
 		scenes.push_back(new jacobsonMolnar_01());
 		scenes.push_back(new hyojinVeraMolnar());
 		scenes.push_back(new hyojinJohnWhitney());
-		scenes.push_back(new mattKnowlton());
+//		scenes.push_back(new mattKnowlton());
 		scenes.push_back(new EstherKnowltonScene());
 		scenes.push_back(new yingTanWhitneyMatrix());
 		scenes.push_back(new annMolnarRectangles());
@@ -352,14 +351,14 @@ void sceneManager::setup(){
 		//scenes.push_back(new alexGifPaletteDitherMenkman());
 //		scenes.push_back(new yeseulMenkmanInstitution());
 		scenes.push_back(new yeseulCooperMessages());
-		scenes.push_back(new yeseulWhitneyScene());
+//		scenes.push_back(new yeseulWhitneyScene());
 		scenes.push_back(new yeseulRileyBrokencircle());
 		scenes.push_back(new yosukeJohnWhitneyMatrix());
 		scenes.push_back(new mgsCooperSymbols());
 		scenes.push_back(new mgsRileyDiamonds());
 		scenes.push_back(new mgsRileyEllipsesAndSquares());
 		scenes.push_back(new mgsVeraMolnarLineStudy());
-		scenes.push_back(new mgsMaedaTimePainter());
+//		scenes.push_back(new mgsMaedaTimePainter());
 		scenes.push_back(new mgsRileyDescending());
 		scenes.push_back(new olegVeraV());
 		scenes.push_back(new sarahgpRileyCircle());

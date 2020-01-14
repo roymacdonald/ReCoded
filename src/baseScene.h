@@ -109,7 +109,7 @@ public:
     }          // this is for scenes that change over time....
     
     baseScene(){};
-    ~baseScene(){}
+    virtual ~baseScene(){}
     
     void enableMidi();
     void updateMidiParams();
