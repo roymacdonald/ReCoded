@@ -145,4 +145,6 @@ public:
 	
 	int countLetters = 0;
 	float pctCode = 0;
+	
+	size_t checkedScenes = 0;
 };

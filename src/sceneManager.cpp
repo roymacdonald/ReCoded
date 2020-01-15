@@ -446,8 +446,10 @@ void sceneManager::setup(){
 //-----------------------------------------------------------------------------------
 void sceneManager::startScene(int whichScene){
 	#ifdef TEST_SCENES
-	if(scenes[currentScene]->bSceneTested.get()){
-		advanceScene();
+	while(scenes[currentScene]->bSceneTested.get() && checkedScenes < scenes.size()){
+		checkedScenes++;
+		currentScene ++;
+		currentScene %= scenes.size();
 	}
 	#endif
 
@@ -538,6 +540,7 @@ void sceneManager::stopPlaying(){
     sync.player.stop();
 	#ifdef TEST_SCENES
 	if(scenes[currentScene]->bSceneTested.get() == false){
+		checkedScenes++;
 		scenes[currentScene]->bSceneTested = true;
 	}
 	#endif
