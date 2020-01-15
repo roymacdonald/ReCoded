@@ -43,4 +43,14 @@ class ofApp : public ofBaseApp{
 	vector<ofRectangle>screenRects;
 #endif
 	
+#ifdef TEST_SCENES
+	ofxPanel testGui;
+	void loadTestGui();
+	void saveTestGui(bool& );
+	std::map<string, ofParameterGroup> parameters;
+	ofEventListeners testListeners;
+	
+#endif
+	
+	
 };

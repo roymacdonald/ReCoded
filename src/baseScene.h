@@ -7,7 +7,7 @@
 //#ifdef USE_MIDI_RECORDING
 #include "ofxMidiRecorder.h"
 //#endif
-
+#include "appConstants.h"
 
 void reportKnobs(string f);
 class baseScene {
@@ -166,4 +166,8 @@ public:
     vector < int > midiKnobs;
     float defaultDuration = 45;
 	
+#ifdef TEST_SCENES
+	ofParameter<bool> bSceneTested = {"SceneTested", false};
+	
+#endif
 };

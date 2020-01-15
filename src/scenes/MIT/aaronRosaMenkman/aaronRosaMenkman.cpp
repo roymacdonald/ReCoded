@@ -38,10 +38,10 @@ void aaronRosaMenkman::update(){
         if (i < whereToSkip || i > (whereToSkip+howMuchToSkip)){
             buffer2.append(buffer.getData() + i, 1);
         } else {
-            char * data = new char[1];
-            data[0] = ofRandom(0,255);
-            buffer2.append(data, 1);
-            delete data;
+//			data;// = new char[1];
+            char data = ofRandom(0,255);
+            buffer2.append(&data, 1);
+//            delete data;
             
         }
     }

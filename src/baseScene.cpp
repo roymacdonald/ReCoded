@@ -332,6 +332,9 @@ void baseScene::setAuthor(string newAuthor) {
 
 void baseScene::setOriginalArtist(string newOriginalArtist) {
   originalArtist = newOriginalArtist;
+	#ifdef TEST_SCENES
+		bSceneTested.setName(originalArtist);
+	#endif
 }
 
 float baseScene::getElapsedTimef(){

@@ -436,15 +436,21 @@ void sceneManager::setup(){
     
 	loadSceneGui();
 	
-	
+#ifndef TEST_SCENES
     startScene(currentScene);
-
+#endif
     screenRect.set(0, 0, VISUALS_WIDTH+CODE_X_POS, VISUALS_HEIGHT);
     bShowCursor = true;
     ofAddListener(sync.ffwKeyPressed, this, &sceneManager::setAdvanceCurrentScene);
 }
 //-----------------------------------------------------------------------------------
 void sceneManager::startScene(int whichScene){
+	#ifdef TEST_SCENES
+	if(scenes[currentScene]->bSceneTested.get()){
+		advanceScene();
+	}
+	#endif
+
     scenes[currentScene]->resetTiming();
     scenes[currentScene]->reset();
     TM.setup( (scenes[currentScene]), codeTweenDuration);
@@ -530,6 +536,12 @@ void sceneManager::startPlaying(){
 //-----------------------------------------------------------------------------------
 void sceneManager::stopPlaying(){
     sync.player.stop();
+	#ifdef TEST_SCENES
+	if(scenes[currentScene]->bSceneTested.get() == false){
+		scenes[currentScene]->bSceneTested = true;
+	}
+	#endif
+	
 }
 #endif
 
@@ -1032,6 +1044,8 @@ void sceneManager::nextScene(bool forward){
     isTransitioning = false;
     shouldDrawCode = true;
 
+
+	
     startScene(currentScene);
 
 	loadSceneGui();

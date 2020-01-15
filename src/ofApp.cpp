@@ -24,9 +24,45 @@ void ofApp::setup(){
 	//-------------------------------------------
 	IM.setLEDs(1,1,1,1);
 
+	loadTestGui();
+	SM.startScene(SM.currentScene);
+}
+#ifdef TEST_SCENES
+//--------------------------------------------------------------
+void ofApp::saveTestGui(bool& ){
+	cout <<  "ofApp::saveTestGui  : " << endl;
+	testGui.saveToFile("Tested_Scenes.xml");
 	
 }
-
+//--------------------------------------------------------------
+void ofApp::loadTestGui(){
+	testGui.setup("Tested Scenes", "Tested_Scenes.xml");
+	for(auto s: SM.scenes){
+		if(s){
+			parameters[s->author].setName(s->author);
+			if(parameters[s->author].contains(s->bSceneTested.getName())){
+				s->bSceneTested.setName(s->bSceneTested.getName()+ "1");
+			}
+			parameters[s->author].add(s->bSceneTested);
+			
+		}
+	}
+	for(auto& p: parameters){
+		testGui.add(p.second);
+	}
+//	testGui.setWidthElements(350);
+//	auto s = testGui.getShape();
+//	s.width = 355;
+//	testGui.setShape(s);
+	testGui.loadFromFile("Tested_Scenes.xml");
+	for(auto s: SM.scenes){
+		if(s){
+			testListeners.push(s->bSceneTested.newListener(this, &ofApp::saveTestGui));
+		}
+	}
+	
+}
+#endif
 //--------------------------------------------------------------
 void ofApp::update(){
 	SM.update();
@@ -161,7 +197,10 @@ void ofApp::draw(){
 		auto bl = bb.getBottomLeft();
 		SM.sync.drawDebug( bl.x, bl.y + 40);
     }
-
+#ifdef TEST_SCENES
+	testGui.draw();
+#endif
+	
 }
 
 
