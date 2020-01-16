@@ -24,45 +24,8 @@ void ofApp::setup(){
 	//-------------------------------------------
 	IM.setLEDs(1,1,1,1);
 
-	loadTestGui();
-	SM.startScene(SM.currentScene);
+
 }
-#ifdef TEST_SCENES
-//--------------------------------------------------------------
-void ofApp::saveTestGui(bool& ){
-	cout <<  "ofApp::saveTestGui  : " << endl;
-	testGui.saveToFile("Tested_Scenes.xml");
-	
-}
-//--------------------------------------------------------------
-void ofApp::loadTestGui(){
-	testGui.setup("Tested Scenes", "Tested_Scenes.xml");
-	for(auto s: SM.scenes){
-		if(s){
-			parameters[s->author].setName(s->author);
-			if(parameters[s->author].contains(s->bSceneTested.getName())){
-				s->bSceneTested.setName(s->bSceneTested.getName()+ "1");
-			}
-			parameters[s->author].add(s->bSceneTested);
-			
-		}
-	}
-	for(auto& p: parameters){
-		testGui.add(p.second);
-	}
-//	testGui.setWidthElements(350);
-//	auto s = testGui.getShape();
-//	s.width = 355;
-//	testGui.setShape(s);
-	testGui.loadFromFile("Tested_Scenes.xml");
-	for(auto s: SM.scenes){
-		if(s){
-			testListeners.push(s->bSceneTested.newListener(this, &ofApp::saveTestGui));
-		}
-	}
-	
-}
-#endif
 //--------------------------------------------------------------
 void ofApp::update(){
 	SM.update();
@@ -85,7 +48,7 @@ void ofApp::draw(){
 	}else{
 		ofDrawBitmapStringHighlight("Can not draw as it seems to be less than 2 screens", 30,30);
 	}
-	if(SM.bDrawGui) SM.drawGui();
+	SM.drawGui();
 	
 	
 #else
@@ -197,9 +160,6 @@ void ofApp::draw(){
 		auto bl = bb.getBottomLeft();
 		SM.sync.drawDebug( bl.x, bl.y + 40);
     }
-#ifdef TEST_SCENES
-	testGui.draw();
-#endif
 	
 }
 
@@ -209,7 +169,7 @@ void ofApp::draw(){
 void ofApp::keyPressed(int key){
 
 	if (key == OF_KEY_RIGHT) {
-		SM.advanceScene();
+		SM.advanceScene(true);
 	} else if (key == OF_KEY_LEFT) {
 		SM.regressScene();
 	}
@@ -234,6 +194,11 @@ void ofApp::keyPressed(int key){
 		ofShowCursor();
         SM.bDrawGui = true;
     }
+	#ifdef TEST_SCENES
+	if (key == 'B') {
+		SM.blacklistCurrentScene();
+	}
+	#endif
 
 
 

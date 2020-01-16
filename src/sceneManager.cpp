@@ -287,21 +287,21 @@ void sceneManager::setup(){
 	
 	#ifdef SHOW_SFPC_FALL_2017
 	   // ------- 2017 fall
-		scenes.push_back(new EstherMolnarScene());
-		scenes.push_back(new stacyButterflies());
+//		scenes.push_back(new EstherMolnarScene());
+//		scenes.push_back(new stacyButterflies());
 		scenes.push_back(new diegoScene_01());
-		scenes.push_back(new annCaseyWave());
-		scenes.push_back(new weiMolnar_01());
+//		scenes.push_back(new annCaseyWave());
+//		scenes.push_back(new weiMolnar_01());
 		scenes.push_back(new runchalMolnar());
-		scenes.push_back(new aprilMenkman());
-		scenes.push_back(new heatherMolnarScene());
+//		scenes.push_back(new aprilMenkman());
+//		scenes.push_back(new heatherMolnarScene());
 		scenes.push_back(new niklasLissajous());
-		scenes.push_back(new niklasMolnar());
+//		scenes.push_back(new niklasMolnar());
 		scenes.push_back(new niklasMorisawa());
 		scenes.push_back(new niklasWhitneySineWave());
-		scenes.push_back(new fernandoMuriel());
-		scenes.push_back(new fernandoWhitney());
-		scenes.push_back(new fernandoWhitney2());
+//		scenes.push_back(new fernandoMuriel());
+//		scenes.push_back(new fernandoWhitney());
+//		scenes.push_back(new fernandoWhitney2());
 		scenes.push_back(new jacobsonWhitney_01());
 		scenes.push_back(new jacobsonMolnar_02());
 		scenes.push_back(new jacobsonMolnar_01());
@@ -309,8 +309,8 @@ void sceneManager::setup(){
 		scenes.push_back(new hyojinJohnWhitney());
 //		scenes.push_back(new mattKnowlton());
 		scenes.push_back(new EstherKnowltonScene());
-		scenes.push_back(new yingTanWhitneyMatrix());
-		scenes.push_back(new annMolnarRectangles());
+//		scenes.push_back(new yingTanWhitneyMatrix());
+//		scenes.push_back(new annMolnarRectangles());
 		scenes.push_back(new weiWhitney());
 		scenes.push_back(new yumiNishida01());
 		
@@ -365,7 +365,8 @@ void sceneManager::setup(){
 		scenes.push_back(new mwalczykVeraSquares());
 
 	#endif
-	
+
+		
 }
 #ifdef RANDOMIZE_SCENES
     ofRandomize(scenes);
@@ -434,46 +435,37 @@ void sceneManager::setup(){
     codeControls.loadFromFile("codeSettings.xml");
 //    codeControls.setPosition(520+504+20, 500);
     
-	loadSceneGui();
 	
-#ifndef TEST_SCENES
-    startScene(currentScene);
+#ifdef TEST_SCENES
+	loadTestGui();
 #endif
+	startCurrentScene();
     screenRect.set(0, 0, VISUALS_WIDTH+CODE_X_POS, VISUALS_HEIGHT);
     bShowCursor = true;
     ofAddListener(sync.ffwKeyPressed, this, &sceneManager::setAdvanceCurrentScene);
-}
-//-----------------------------------------------------------------------------------
-void sceneManager::startScene(int whichScene){
+	
+	
+	
 	#ifdef TEST_SCENES
-	while(scenes[currentScene]->bSceneTested.get() && checkedScenes < scenes.size()){
-		checkedScenes++;
-		currentScene ++;
-		currentScene %= scenes.size();
-	}
+			
+
+			cout << "-------------SCENES LIST-------------" << endl;
+			
+			for(auto s: scenes){
+				if(s){
+					cout <<  s->author << " - " << s->originalArtist << " | " <<typeid(*s).name()<<endl;
+				}
+			}
+			
+			
+			cout << "-------------------------------------" << endl;
+			
 	#endif
 
-    scenes[currentScene]->resetTiming();
-    scenes[currentScene]->reset();
-    TM.setup( (scenes[currentScene]), codeTweenDuration);
-    lettersLastFrame = 0;
-    lastPlayTime = 0;
-    maxLetterX = 0;
-    lastLetterY = 0;
-#ifdef USE_MIDI_PARAM_SYNC
-    sync.setSyncGroup(scenes[currentScene]->midiParameters, true);
-    isMidiConnected = sync.enableMidi();
-#endif
-//#ifdef USE_EXTERNAL_SOUNDS
-//    oscMessage.clear();
-//    oscMessage.setAddress("/d4n/scene/load");
-//    oscMessage.addIntArg(currentScene);
-//    oscSender.sendMessage(oscMessage, false);
-//#else
-//#endif
-    // TODO
-    
+	
+	
 }
+
 #ifdef USE_MIDI_PARAM_SYNC
 
 //-----------------------------------------------------------------------------------
@@ -549,6 +541,183 @@ void sceneManager::stopPlaying(){
 #endif
 
 //-----------------------------------------------------------------------------------
+void sceneManager::startCurrentScene(){
+	#ifdef TEST_SCENES
+	while(scenes[currentScene]->bSceneTested.get() && checkedScenes < scenes.size()){
+		checkedScenes++;
+		currentScene ++;
+		currentScene %= scenes.size();
+	}
+	#endif
+
+	
+	cout <<  "startCurrentScene  "  << currentScene  << endl;
+	
+    scenes[currentScene]->resetTiming();
+    scenes[currentScene]->reset();
+    TM.setup( (scenes[currentScene]), codeTweenDuration);
+    lettersLastFrame = 0;
+    lastPlayTime = 0;
+    maxLetterX = 0;
+    lastLetterY = 0;
+#ifdef USE_MIDI_PARAM_SYNC
+    sync.setSyncGroup(scenes[currentScene]->midiParameters, true);
+    isMidiConnected = sync.enableMidi();
+#endif
+	loadSceneGui();
+//#ifdef USE_EXTERNAL_SOUNDS
+//    oscMessage.clear();
+//    oscMessage.setAddress("/d4n/scene/load");
+//    oscMessage.addIntArg(currentScene);
+//    oscSender.sendMessage(oscMessage, false);
+//#else
+//#endif
+    // TODO
+    
+}
+//-----------------------------------------------------------------------------------
+void sceneManager::nextScene(bool forward){
+	cout << "nextScene. forward: " << boolalpha << forward << endl;
+#ifdef USE_MIDI_PARAM_SYNC
+    recordingEnd();
+#endif
+
+    stopPlaying();
+    parameterChangeSound.setVolume(0);
+	
+	if (forward && bFadeOut) {
+		if (!isTransitioning) {
+			isTransitioning = true;
+			preTransitionStart = ofGetElapsedTimef();
+			preTransitionPct = 0;
+			return;
+		} else {
+			isTransitioning = false;
+		}
+	}
+	
+    if (forward){
+        currentScene ++;
+        currentScene %= scenes.size();
+    } else {
+        currentScene --;
+        if (currentScene < 0){
+            currentScene = scenes.size() - 1;
+        }
+    }
+    
+#ifdef TYPE_ANIMATION
+    shouldDrawScene = false;
+#else
+    shouldDrawScene = true;
+#endif
+
+    isTransitioning = false;
+    shouldDrawCode = true;
+
+
+	
+    startCurrentScene();
+
+}
+
+#ifdef TEST_SCENES
+//--------------------------------------------------------------
+void sceneManager::blacklistCurrentScene(){
+	if(currentScene < scenes.size()){
+		if(scenes[currentScene]){
+			scenes[currentScene]->bBlacklist = true;
+		}
+	}
+}
+//--------------------------------------------------------------
+void sceneManager::saveTestGui(bool& ){
+	cout <<  "sceneManager::saveTestGui  : " << endl;
+	testGui.saveToFile("Tested_Scenes.xml");
+	
+}
+//--------------------------------------------------------------
+void sceneManager::loadTestGui(){
+	testGui.setup("Tested Scenes", "Tested_Scenes.xml");
+	for(auto s: scenes){
+		if(s){
+			parameters[s->author].setName(s->author);
+			if(parameters[s->author].contains(s->bSceneTested.getName())){
+				s->bSceneTested.setName(s->bSceneTested.getName()+ typeid(s).name());
+			}
+			s->bBlacklist.setName("Blacklist"+s->bSceneTested.getName());
+			parameters[s->author].add(s->bSceneTested);
+			parameters[s->author].add(s->bBlacklist);
+		}
+	}
+	for(auto& p: parameters){
+		testGui.add(p.second);
+	}
+	testGui.loadFromFile("Tested_Scenes.xml");
+	for(auto s: scenes){
+		if(s){
+			testListeners.push(s->bSceneTested.newListener(this, &sceneManager::saveTestGui));
+			testListeners.push(s->bBlacklist.newListener(this, &sceneManager::saveTestGui));
+		}
+	}
+	
+	cout << "=====BLACKLIST======" << endl;
+	for(auto s: scenes){
+		if(s){
+			if(s->bBlacklist){
+				cout << s->author << "  -  " <<  s->bSceneTested.getName() << endl;
+			}
+		}
+	}
+	cout << "====================" << endl;
+}
+#endif
+
+
+//-----------------------------------------------------------------------------------
+void sceneManager::advanceScene(bool bUpdateAutoTime){
+	nextScene(true);
+	if(bUpdateAutoTime) lastAutoadvanceTime = ofGetElapsedTimef();
+};
+//-----------------------------------------------------------------------------------
+void sceneManager::regressScene(){
+    nextScene(false);
+};
+//-----------------------------------------------------------------------------------
+void sceneManager::loadSceneGui(){
+	
+	sceneGui.clear();
+    sceneGui.setup("scene settings");
+    sceneGui.add(scenes[currentScene]->parameters);
+    sceneGui.setPosition(20, 20);
+	auto r = sceneGui.getShape();
+	gui.setPosition(r.getTopRight() + glm::vec3(30, 0, 0));
+	codeControls.setPosition(r.getBottomLeft() + glm::vec3(0, 30, 0));
+	
+	
+#ifdef TEST_SCENES
+	for(size_t i = 0; i < testGui.getNumControls(); i++){
+		auto c = dynamic_cast<ofxGuiGroup*>(testGui.getControl(i));
+		if(c){
+			if(c->getName() == scenes[currentScene]->author){
+				c->maximize();
+				c->setHeaderBackgroundColor(ofColor::yellow);
+				c->setTextColor(ofColor::black);
+			}else{
+				c->minimize();
+				c->setHeaderBackgroundColor(ofColor(64));
+				c->setTextColor(ofColor::white);
+			}
+		}
+	}
+	
+	
+	testGui.setPosition(ofGetWidth()- testGui.getShape().width, 20);
+	
+#endif
+	
+}
+//-----------------------------------------------------------------------------------
 void sceneManager::update(){
 
     if (autoadvanceDelay > 0.001 && !scenes[currentScene]->isEndSet()) {
@@ -556,13 +725,12 @@ void sceneManager::update(){
             lastAutoadvanceTime = ofGetElapsedTimef();
         }
         if (ofGetElapsedTimef() - lastAutoadvanceTime > autoadvanceDelay) {
-            advanceScene();
-            lastAutoadvanceTime = ofGetElapsedTimef();
+            advanceScene(true);
         }
     } else {
         if (bAutoAdvance && !sync.recorder.isRecording()) {
             if (!isTransitioning && scenes[currentScene]->isSceneDone()) {
-                advanceScene();
+                advanceScene(false);
             }
         }
         lastAutoadvanceTime = 0;
@@ -619,9 +787,10 @@ void sceneManager::update(){
         shouldPlaySceneChangeSound = false;
 
         if (preTransitionPct >= 1.0) {
-            isTransitioning = false;
-            introCursor = false;
             nextScene(true);
+			isTransitioning = false;
+            introCursor = false;
+            
         } else if (preTransitionPct < SCENE_PRE_TRANSITION_FADE) {
             fadingOut = true;
             shouldDrawScene = true;
@@ -727,8 +896,11 @@ void sceneManager::drawGui(){
         codeControls.draw();
         
         gui.draw();
+
     }
-    
+	#ifdef TEST_SCENES
+		testGui.draw();
+	#endif
 }
 //-----------------------------------------------------------------------------------
 void sceneManager::renderSceneFbo(){
@@ -1022,73 +1194,6 @@ void sceneManager::draw(const ofRectangle& codeRect, const ofRectangle& sceneRec
 }
 
 
-//-----------------------------------------------------------------------------------
-void sceneManager::nextScene(bool forward){
-#ifdef USE_MIDI_PARAM_SYNC
-    recordingEnd();
-#endif
-
-    if (forward){
-        currentScene ++;
-        currentScene %= scenes.size();
-    } else {
-        currentScene --;
-        if (currentScene < 0){
-            currentScene = scenes.size() - 1;
-        }
-    }
-    
-#ifdef TYPE_ANIMATION
-    shouldDrawScene = false;
-#else
-    shouldDrawScene = true;
-#endif
-
-    isTransitioning = false;
-    shouldDrawCode = true;
-
-
-	
-    startScene(currentScene);
-
-	loadSceneGui();
-}
-//-----------------------------------------------------------------------------------
-void sceneManager::loadSceneGui(){
-	
-	sceneGui.clear();
-    sceneGui.setup("scene settings");
-    sceneGui.add(scenes[currentScene]->parameters);
-    sceneGui.setPosition(20, 20);
-	auto r = sceneGui.getShape();
-	gui.setPosition(r.getTopRight() + glm::vec3(30, 0, 0));
-	codeControls.setPosition(r.getBottomLeft() + glm::vec3(0, 30, 0));
-}
-//-----------------------------------------------------------------------------------
-void sceneManager::advanceScene(){
-    stopPlaying();
-    
-    parameterChangeSound.setVolume(0);
-    
-    if (bFadeOut) {
-        if (!isTransitioning) {
-            isTransitioning = true;
-            preTransitionStart = ofGetElapsedTimef();
-            preTransitionPct = 0;
-        } else {
-            isTransitioning = false;
-            nextScene(true);
-        }
-    } else {
-        nextScene(true);
-    }
-};
-//-----------------------------------------------------------------------------------
-void sceneManager::regressScene(){
-    stopPlaying();
-    parameterChangeSound.setVolume(0);
-    nextScene(false);
-};
 //-----------------------------------------------------------------------------------
 void sceneManager::screenGrab() {
     string path = "screengrabs/";

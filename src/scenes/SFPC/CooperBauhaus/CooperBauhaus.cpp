@@ -11,7 +11,7 @@ void CooperBauhaus::setup(){
     
     parameters.add(displacement.set("displacement", 10,0,100));
     
-    font.load("Helvetica Neue", 70, true,true,true);
+    font.load("Helvetica Neue", 70 * (VISUALS_WIDTH/float(500)), true,true,true);
     
    // text = "SCHOOL\nFOR\nPOETIC\nCOMPUTATION";
     text = "BAUHAUS";

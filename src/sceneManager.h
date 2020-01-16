@@ -47,7 +47,7 @@ public:
 	void draw(const ofRectangle& codeRect, const ofRectangle& sceneRect, bool bDrawCode = false);
     void drawType();
     
-    void advanceScene();
+    void advanceScene(bool bUpdateAutoTime);
     void regressScene();
     void screenGrab();
     
@@ -56,7 +56,7 @@ public:
 //      ofPixels lastFrame, currFrame;
   //void computeMotion(ofFbo &fbo);
     
-    void startScene(int whichScene);
+    void startCurrentScene();
   
 //    ofFbo transitionFbo;
     ofFbo sceneFbo;
@@ -147,4 +147,18 @@ public:
 	float pctCode = 0;
 	
 	size_t checkedScenes = 0;
+	
+	
+	#ifdef TEST_SCENES
+		ofxPanel testGui;
+		void loadTestGui();
+		void saveTestGui(bool& );
+		std::map<string, ofParameterGroup> parameters;
+		ofEventListeners testListeners;
+	
+	void blacklistCurrentScene();
+		
+	#endif
+
+	
 };

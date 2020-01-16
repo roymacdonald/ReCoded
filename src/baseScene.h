@@ -168,6 +168,6 @@ public:
 	
 #ifdef TEST_SCENES
 	ofParameter<bool> bSceneTested = {"SceneTested", false};
-	
+	ofParameter<bool> bBlacklist = {"Blacklist", false};
 #endif
 };
