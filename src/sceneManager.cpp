@@ -91,7 +91,7 @@
 #include "chrisVeraInterruptions.h"
 #include "aaronMarcusHieroglyphB.h"
 #include "veraMolnarLines68.h"
-#include "Cooper3dText.h"
+//#include "Cooper3dText.h"
 #include "alexLissamojiWhitney.h"
 #include "janVantommeScene.h"
 #include "rodrigoBelfort.h"
@@ -107,7 +107,7 @@
 #include "mgsRileyDiamonds.h"
 #include "mgsRileyEllipsesAndSquares.h"
 #include "mgsRileyDescending.h"
-#include "mgsVeraMolnarLineStudy.h"
+//#include "mgsVeraMolnarLineStudy.h"
 #include "mgsMaedaTimePainter.h"
 #include "olegVeraV.h"
 #include "sarahgpRileyCircle.h"
@@ -356,9 +356,9 @@ void sceneManager::setup(){
 		scenes.push_back(new yosukeJohnWhitneyMatrix());
 		scenes.push_back(new mgsCooperSymbols());
 		scenes.push_back(new mgsRileyDiamonds());
-		scenes.push_back(new mgsRileyEllipsesAndSquares());
-		scenes.push_back(new mgsVeraMolnarLineStudy());
-//		scenes.push_back(new mgsMaedaTimePainter());
+//		scenes.push_back(new mgsRileyEllipsesAndSquares());
+////		scenes.push_back(new mgsVeraMolnarLineStudy());
+////		scenes.push_back(new mgsMaedaTimePainter());
 		scenes.push_back(new mgsRileyDescending());
 		scenes.push_back(new olegVeraV());
 		scenes.push_back(new sarahgpRileyCircle());
