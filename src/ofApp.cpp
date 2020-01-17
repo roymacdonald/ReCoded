@@ -144,6 +144,9 @@ void ofApp::draw(){
 		
 		ss << "scene has rec data:  " << (string)(SM.scenes[SM.currentScene]->hasRecData()?"TRUE":"FALSE") << endl;
 		ss << "scene rec data size: " << SM.scenes[SM.currentScene]->recData.size() << endl;
+		
+		ss << "Max Activation Per Line : " << SM.maxActivationPerLine << endl;
+		ss << "Max Total Activation : " << SM.maxTotalActivation << endl;
 		ss << "Elapsed time: " << SM.scenes[SM.currentScene]->getElapsedTimef() << endl;
 		
 		ss << "codeRect " << codeRect <<endl;

@@ -160,5 +160,5 @@ public:
 		
 	#endif
 
-	
+    float maxActivationPerLine = 0, maxTotalActivation = 0;
 };

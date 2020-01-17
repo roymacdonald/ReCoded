@@ -972,7 +972,8 @@ void sceneManager::renderCodeFbo(){
     
     // Quick cache of how many lines we're going to draw
     int nLines = 0, currentLine = 0;
-    float maxActivationPerLine = 0, maxTotalActivation = 0;
+	maxActivationPerLine = 0;
+	maxTotalActivation = 0;
     
     // One entry per line, stores id of param that is getting animated the most
     vector<int> lineHasAnimParam;
