@@ -147,6 +147,23 @@ void ofApp::draw(){
 		
 		ss << "Max Activation Per Line : " << SM.maxActivationPerLine << endl;
 		ss << "Max Total Activation : " << SM.maxTotalActivation << endl;
+		
+		
+		// For MIDI
+		ss << "paramChangedEnergy:"<<endl;
+		for(auto& p:SM.TM.paramChangedEnergy){
+			ss << "    " << p <<endl;
+		}
+		ss << "paramEnergyTarget:"<<endl;
+		for(auto& p:SM.TM.paramEnergyTarget){
+			ss << "    " << p <<endl;
+		}
+		
+		ss << "paramEnergy:"<<endl;
+		for(auto& p:SM.TM.paramEnergy){
+			ss << "    " << p <<endl;
+		}
+		
 		ss << "Elapsed time: " << SM.scenes[SM.currentScene]->getElapsedTimef() << endl;
 		
 		ss << "codeRect " << codeRect <<endl;
