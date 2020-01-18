@@ -161,4 +161,8 @@ public:
 	#endif
 
     float maxActivationPerLine = 0, maxTotalActivation = 0;
+	
+//	void saveScreeshot();
+//	bool bSaveScreenshot = true;
+	
 };

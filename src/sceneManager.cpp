@@ -354,7 +354,7 @@ void sceneManager::setup(){
 //		scenes.push_back(new yeseulWhitneyScene());
 		scenes.push_back(new yeseulRileyBrokencircle());
 		scenes.push_back(new yosukeJohnWhitneyMatrix());
-		scenes.push_back(new mgsCooperSymbols());
+//		scenes.push_back(new mgsCooperSymbols());
 		scenes.push_back(new mgsRileyDiamonds());
 //		scenes.push_back(new mgsRileyEllipsesAndSquares());
 ////		scenes.push_back(new mgsVeraMolnarLineStudy());
@@ -584,7 +584,7 @@ void sceneManager::nextScene(bool forward){
 
     stopPlaying();
     parameterChangeSound.setVolume(0);
-	
+//	bSaveScreenshot=true;
 	if (forward && bFadeOut) {
 		if (!isTransitioning) {
 			isTransitioning = true;
@@ -757,6 +757,7 @@ void sceneManager::update(){
     if (bSceneWaitForCode) {
         if (!isTransitioning && !shouldDrawScene && pctDelay > FADE_DELAY_MIN){
             shouldDrawScene = true;
+//			saveScreeshot();
             fadingIn = true;
 #ifdef USE_EXTERNAL_SOUNDS
             oscMessage.clear();
@@ -777,6 +778,7 @@ void sceneManager::update(){
         }
     } else {
         shouldDrawScene = true;
+//		saveScreeshot();
     }
 #endif
     if (isTransitioning) {
@@ -794,6 +796,7 @@ void sceneManager::update(){
         } else if (preTransitionPct < SCENE_PRE_TRANSITION_FADE) {
             fadingOut = true;
             shouldDrawScene = true;
+//			saveScreeshot();
             shouldDrawCode = true;
             hasTriggeredSceneChangeSound = false;
 //        } else if (preTransitionPct > SCENE_PRE_TRANSITION_SOUND) {
@@ -1027,7 +1030,8 @@ void sceneManager::renderCodeFbo(){
             float currActivation = TM.paramEnergy[lineHasAnimParam[currentLine]];
             lineBrightness -= (maxTotalActivation - currActivation) * lineWithActiveParamDim;
         }
-        
+//        ofSetColor(255);
+//        font.drawString("This should always render." , 30, 30);
         ofSetColor(127);
         if (letters[i].type == CHARACTER_CODE) {
             ofSetColor(lineBrightness);
@@ -1110,6 +1114,13 @@ void sceneManager::renderCodeFbo(){
     codeFbo.end();
     
 }
+//-----------------------------------------------------------------------------------
+//void sceneManager::saveScreeshot(){
+//	if(bSaveScreenshot){
+//	ofSaveScreen(ofGetTimestampString() + "_" + scenes[currentScene]->author+"-"+scenes[currentScene]->originalArtist + ".png");
+//		bSaveScreenshot = false;
+//	}
+//}
 //-----------------------------------------------------------------------------------
 void sceneManager::draw(){
 	draw(ofRectangle(CODE_X_POS, 0, CODE_WIDTH, CODE_HEIGHT) ,ofRectangle(0,0,VISUALS_WIDTH, VISUALS_HEIGHT));

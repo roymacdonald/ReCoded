@@ -173,12 +173,32 @@ void ofApp::draw(){
 		for(auto& s: screenRects){
 			ss << "   " << s << endl;
 		}
+        ss << boolalpha;
+        ss << "Loaded: " << SM.font.isLoaded() << endl;//bool
+        ss << "Anti Aliased: " << SM.font.isAntiAliased() << endl;//bool
+        ss << "Full Character: " << SM.font.hasFullCharacterSet() << endl;//bool
+        ss << "Num Characters: " << SM.font.getNumCharacters() << endl;//std::size_t
+        ss << "Size: " << SM.font.getSize() << endl;//int
+        ss << "Line Height: " << SM.font.getLineHeight() << endl;//float
+        ss << "Ascender Height: " << SM.font.getAscenderHeight() << endl;//float
+        ss << "Descender Height: " << SM.font.getDescenderHeight() << endl;//float
+        ss << "Glyph BBox: " << SM.font.getGlyphBBox() << endl;//const ofRectangle &
+        ss << "Letter Spacing: " << SM.font.getLetterSpacing() << endl;//float
+        ss << "Space Size: " << SM.font.getSpaceSize() << endl;//float
+        
+        
 		auto p = SM.gui.getShape().getTopRight() + glm::vec3(40,0,0);
 		ofDrawBitmapStringHighlight(ss.str(), p);
 		ofBitmapFont bf;
 		auto bb = bf.getBoundingBox(ss.str(), p.x, p.y);
 		auto bl = bb.getBottomLeft();
 		SM.sync.drawDebug( bl.x, bl.y + 40);
+        
+        ofSetColor(255);
+        auto sbl = sceneRect.getBottomLeft();
+        SM.font.getFontTexture().draw(sbl);
+        
+        
     }
 	
 }
