@@ -7,6 +7,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+	ofSetLogLevel(OF_LOG_VERBOSE);
 	SM.setup();
 	IM.setup();
 

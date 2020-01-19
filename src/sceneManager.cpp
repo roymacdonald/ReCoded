@@ -552,6 +552,7 @@ void sceneManager::startCurrentScene(){
 
 	
 	cout <<  "startCurrentScene  "  << currentScene  << endl;
+	cout << scenes[currentScene]->author << " | " << scenes[currentScene]->originalArtist << endl;
 	
     scenes[currentScene]->resetTiming();
     scenes[currentScene]->reset();
