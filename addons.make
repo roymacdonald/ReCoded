@@ -10,3 +10,4 @@ local_addons/ofxCv
 local_addons/ofxOpenCv
 local_addons/ofxDelaunay
 local_addons/ofxPoissonDiskSampling
+local_addons/ofxWatchdog
